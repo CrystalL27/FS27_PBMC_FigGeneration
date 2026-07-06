@@ -82,6 +82,7 @@ MonoClusters_GO <- MonoClusters_GO %>%
   group_by(cluster) %>%
   slice_min(p.adjust, n = 16)
 
+##GO Dot Plot of Monos with up and down designated for each cluster
 ggplot(data=MonoClusters_GO, aes(x=factor(direction, levels = c("up", "down")), 
                                  y=fct_reorder(Term_GO, direction), 
                                  fill=p.adjust, 
