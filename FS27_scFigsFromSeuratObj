@@ -142,3 +142,82 @@ DotPlot(pbmc3,
   xlab('Gene') + ylab('Cluster') +
   theme(axis.text.x = element_text(face = "italic")) +
   ggtitle("Salmonella") & RotatedAxis()
+
+##Figures for just monocyte clusters 
+#define cell types to include
+Monos <- c("Mono_2", "Mono_1", "Mono_3", "Mono_4")
+#subset the object to create new file
+MonosSub <- subset(pbmc3, idents = Monos)
+MonosSub1 <- subset(pbmc3, idents = Monos)
+Idents(MonosSub) <- "treatment"
+Idents(MonosSub1) <- "celltypes"
+
+MonosSub$Monos_order <- 
+Monos <- c("Mono_2", "Monos_1", "Monos_3", "Monos_4")
+MonosSub$Monos_order <- factor(x=MonosSub$Monos_order, levels = Monos)
+Idents(object=MonosSub) <- "Monos"
+
+#split by treatment
+DimPlot_scCustom(seurat_object = MonosSub1, 
+                 group.by = "celltypes", split.by = "treatment", label = FALSE, 
+                 colors_use = DiscretePalette_scCustomize(num_colors = 4, palette = "alphabet"))
+
+DimPlot_scCustom(seurat_object = MonosSub1, 
+                 group.by = "celltypes", split.by = "treatment", label = FALSE, 
+                 colors_use = DiscretePalette_scCustomize(num_colors = 4, palette = "alphabet"))
+
+# Use grep or which to identify cells - want to show umap of only control group
+cells_to_plot <- WhichCells(object, expression = treatment == "GroupA")
+DimPlot(object, cells = cells_to_plot)
+cells_to_plot <- WhichCells(MonosSub1, expression = treatment == "Control")
+
+DimPlot_scCustom(MonosSub1, 
+        cells = cells_to_plot,
+        group.by = "celltypes", label = FALSE, colors_use = DiscretePalette_scCustomize(num_colors = 4, palette = "alphabet")) +
+  ggtitle("Control Monocytes Only")
+
+DotPlot(MonosSub,
+        features = c('AIF1', 'CTSS', 'SIRPA', 'CD14','FCGR3A', 'CD163', 
+                     'SLA-DRA', 'SLA-DQB1', 'SLA-DMB', 'CD1D',
+                     'CD86', 'CD80', 'ITGAM', 'ITGB1', 'ITGA4', 'ICAM1', 'SELL', 'CD82',
+                     'NOTCH2', 'WNT5B',
+                     'TLR2', 'TLR4', 'NOD1', 'NOD2', 'CLEC2B', 'CXCR2',
+                     'LYZ', 'S100A10', 'S100A9', 'S100A8', 'NRG1', 'IL1B', 'TNF', 'CXCL10', 'CCL11',
+                     'GBP1', 'AHR', 'HIF1A', 'COX1', 'COX2', 'COX3', 'ND1', 'ND3', 'ATP6', 'INSYN2B', 'BTBD11'), 
+        group.by = "celltypes", idents = "Control",
+        cols = c('grey', 'blue'), 
+        col.min = -1, 
+        col.max = 2,
+        assay = "SCT") +
+  xlab('Gene') + ylab('Cluster') + 
+  theme(axis.text.x = element_text(face = "italic")) +
+  ggtitle("Control Monocytes Only") & RotatedAxis()
+
+DotPlot(MonosSub,
+        features = c('AIF1', 'CTSS', 'SIRPA', 'CD14','FCGR3A', 'CD163', 
+                     'SLA-DRA', 'SLA-DQB1', 'SLA-DMB', 'CD1D',
+                     'CD86', 'CD80', 'ITGAM', 'ITGB1', 'ITGA4', 'ICAM1', 'SELL', 'CD82',
+                     'NOTCH2', 'WNT5B',
+                     'TLR2', 'TLR4', 'NOD1', 'NOD2', 'CLEC2B', 'CXCR2',
+                     'LYZ', 'S100A10', 'S100A9', 'S100A8', 'NRG1', 'IL1B', 'TNF', 'CXCL10', 'CCL11',
+                     'GBP1', 'AHR', 'HIF1A', 'COX1', 'COX2', 'COX3', 'ND1', 'ND3', 'ATP6', 'INSYN2B', 'BTBD11'), 
+        group.by = "celltypes", idents = "Salmonella",
+        cols = c('grey', 'blue'), 
+        col.min = -1, 
+        col.max = 2,
+        assay = "SCT") +
+  xlab('Gene') + ylab('Cluster') + 
+  theme(axis.text.x = element_text(face = "italic")) +
+  ggtitle("Salmonella Monocytes Only") & RotatedAxis()
+
+###feature plot in control cells
+FeaturePlot_scCustom(seurat_object = MonosSub1,
+                     cells = cells_to_plot,
+                     features = c("CD14", "FCGR3A", "CD163", "SLA-DRA", "TLR2", "NOD1", "S100A8", "AHR"),
+                     label = FALSE, 
+                     colors_use = viridis_magma_dark_high,
+                     na_color = "lightgrey",
+                     keep.scale = "all",
+                     pt.size = 0.5,
+                     num_columns = 4) 
+
