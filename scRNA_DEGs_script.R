@@ -13,6 +13,160 @@ library(EnhancedVolcano)
 library(ggrepel)
 library(UpSetR)
 
+##whole blood DGE Volcano Plots 
+##load file
+target <-read_excel("Users/crystal.loving/Desktop/Experiments/FS27_Salmonella/RNAseq_Bulk_WholeBlood/FS27_TargetFile.xlsx")
+
+#rename Files
+##note mistake in initial data saving as DPI07 as opposed to accurate DPI08.
+DPI2 <- Results_DGE_Crl02vSal02_wholeblood
+DPI7 <- Results_DGE_Crl07vSal07
+SalDE <- Results_DGE_Sal02vSal07
+CntrlDE <- Results_DGE_Crl02vCrl07
+
+
+##change row names to geneName
+rownames(DPI2) <- DPI2$GeneName
+rownames(DPI7) <- DPI7$GeneName
+rownames(CntrlDE) <- CntrlDE$GeneName
+rownames(SalDE) <- SalDE$GeneName
+          EnhancedVolcano(DPI2,
+                          lab = rownames(DPI2),
+                          x = 'log2FoldChange',
+                          y = 'pvalue')
+##volcanoplot
+##if don't want gene names set lab = NA
+
+EnhancedVolcano(toptable = DPI2,
+                title = "DPI2 - Control vs Salmonella",
+                lab = rownames(DPI2),
+                x = 'log2FoldChange',
+                y = 'pvalue',
+                pCutoffCol = 'padj',
+                pCutoff = .05,
+                FCcutoff = 0.5,
+                cutoffLineWidth = 0,
+                col = c('lightgrey', 'grey40', 'grey40', 'red3'),
+                pointSize = 1.5,
+                labSize = 6.0,
+                colAlpha = 1,
+                legendLabels=c('Not sig.','Log2FC','padj',
+                               'padj & Log2FC'),
+                legendPosition = 'right',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                ylim = c(0, 11),
+                xlim = c(-9, 9)) #+ coord_flip()
+
+#graph DPI2 Control vs Salmonella WB
+EnhancedVolcano(toptable = DPI2,
+                title = "DPI2 - Control vs Salmonella",
+                selectLab = c('CASP1', 'CXCR4', 'MS4A7', 'FES',
+                              'RETN', 'ARID5A', 'ANKRD22', 'SERPING1', 'PSTPIP1', 'RAB11FIP4','ALOX5AP',
+                              'TMEM189', 'HPS5', 'GAS7', 'ACOD1', 'CASP1',
+                              'S100A11', 'FAM111A', 'UPP1', 'PKND', 'MCEMP1', 'SCL11A1', 'CXCR4', 'S100A8', 'SLC7A11',
+                              'CD180', 'C15orf48', 'S100A9', 'GATA3'),
+                lab = rownames(DPI2),
+                x = 'log2FoldChange',
+                y = 'pvalue',
+                pCutoffCol = 'padj',
+                pCutoff = .05,
+                FCcutoff = 0,
+                cutoffLineWidth = 0,
+                col = c('lightgrey', 'grey40', 'grey40', 'red3'),
+                pointSize = 1.5,
+                labSize = 6.0,
+                colAlpha = 4/5,
+                legendLabels=c('Not sig.','Log2FC','padj',
+                               'padj & Log2FC'),
+                legendPosition = 'bottom',
+                caption = '13,461 variables',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                drawConnectors = TRUE,
+                ylim = c(0, 11),
+                xlim = c(-9, 9)) 
+##Graph DPI7 Control vs Salmonella WB
+EnhancedVolcano(toptable = DPI7,
+                title = "DPI8 - Control vs Salmonella",
+                selectLab = c('CYP3A39', 'CASP1', 'CXCR4', 'MS4A7', 'S100A9', 'GATA3'),
+                lab = rownames(DPI7),
+                x = 'log2FoldChange',
+                y = 'pvalue',
+                pCutoffCol = 'padj',
+                pCutoff = .05,
+                FCcutoff = 0,
+                cutoffLineWidth = 0,
+                col = c('lightgrey', 'grey40', 'grey40', 'red3'),
+                pointSize = 1.5,
+                labSize = 6.0,
+                colAlpha = 4/5,
+                legendLabels=c('Not sig.','Log2FC','padj',
+                               'padj & Log2FC'),
+                legendPosition = 'bottom',
+                caption = '13,461 variables',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                drawConnectors = TRUE,
+                ylim = c(0, 11),
+                xlim = c(-9, 9)) 
+
+#graph Control 2 vs Control 8
+EnhancedVolcano(toptable = CntrlDE,
+                title = "Control DPI2 vs Control DPI8",
+                lab = rownames(CntrlDE),
+                x = 'log2FoldChange',
+                y = 'pvalue',
+                pCutoffCol = 'padj',
+                pCutoff = .05,
+                FCcutoff = 0,
+                cutoffLineWidth = 0,
+                col = c('lightgrey', 'grey40', 'grey40', 'red3'),
+                pointSize = 1.5,
+                labSize = 6.0,
+                colAlpha = 4/5,
+                legendLabels=c('Not sig.','Log2FC','padj',
+                               'padj & Log2FC'),
+                legendPosition = 'bottom',
+                caption = '13,461 variables',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                drawConnectors = TRUE,
+                ylim = c(0, 11),
+                xlim = c(-9, 9)) 
+
+
+##graph Sal DPI2 vs Sal DPI8
+EnhancedVolcano(toptable = SalDE,
+                title = "Salmonella DPI2 vs Salmonella DPI8",
+                selectLab = c('CASP1', 'CXCR4', 'MS4A7', 'FES', 'BANK1',
+                              'RETN', 'ARID5A', 'ANKRD22', 'SERPING1', 'PSTPIP1', 'RAB11FIP4','ALOX5AP',
+                              'TMEM189', 'HPS5', 'GAS7', 'ACOD1', 'CASP1',
+                              'S100A11', 'FAM111A', 'UPP1', 'PKND', 'MCEMP1', 'SCL11A1', 'CXCR4', 'S100A8',
+                              'CD180', 'C15orf48', 'S100A9', 'GATA3',
+                              'KLRK1', 'MS4A1', 'CLEC1A', 'IRF4'),
+                lab = rownames(SalDE),
+                x = 'log2FoldChange',
+                y = 'pvalue',
+                pCutoffCol = 'padj',
+                pCutoff = .05,
+                FCcutoff = 0,
+                cutoffLineWidth = 0,
+                col = c('lightgrey', 'grey40', 'grey40', 'red3'),
+                pointSize = 1.5,
+                labSize = 6.0,
+                colAlpha = 4/5,
+                legendLabels=c('Not sig.','Log2FC','padj',
+                               'padj & Log2FC'),
+                legendPosition = 'bottom',
+                caption = '13,461 variables',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                drawConnectors = TRUE,
+                ylim = c(0, 15),
+                xlim = c(-9, 9)) 
+
+##Volcano Plots for scPBMC data set.
 #allgenes,not just significant ones, to create volcano plots
 DE_ALL <- X10d_DESeq2_pseudobulk_shrinkage_0_3res_Salmonella_vs_Control
 
