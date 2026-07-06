@@ -162,9 +162,6 @@ DimPlot_scCustom(seurat_object = MonosSub1,
                  group.by = "celltypes", split.by = "treatment", label = FALSE, 
                  colors_use = DiscretePalette_scCustomize(num_colors = 4, palette = "alphabet"))
 
-DimPlot_scCustom(seurat_object = MonosSub1, 
-                 group.by = "celltypes", split.by = "treatment", label = FALSE, 
-                 colors_use = DiscretePalette_scCustomize(num_colors = 4, palette = "alphabet"))
 
 # Use grep or which to identify cells - want to show umap of only control group
 cells_to_plot <- WhichCells(object, expression = treatment == "GroupA")
@@ -183,7 +180,7 @@ DotPlot(MonosSub,
                      'NOTCH2', 'WNT5B',
                      'TLR2', 'TLR4', 'NOD1', 'NOD2', 'CLEC2B', 'CXCR2',
                      'LYZ', 'S100A10', 'S100A9', 'S100A8', 'NRG1', 'IL1B', 'TNF', 'CXCL10', 'CCL11',
-                     'GBP1', 'AHR', 'HIF1A', 'COX1', 'COX2', 'COX3', 'ND1', 'ND3', 'ATP6', 'INSYN2B', 'BTBD11'), 
+                     'GBP1', 'AHR', 'HIF1A', 'INSYN2B', 'BTBD11', 'COX1', 'COX2', 'COX3', 'ND1', 'ND3', 'ATP6', 'HBB'), 
         group.by = "celltypes", idents = "Control",
         cols = c('grey', 'blue'), 
         col.min = -1, 
@@ -200,7 +197,7 @@ DotPlot(MonosSub,
                      'NOTCH2', 'WNT5B',
                      'TLR2', 'TLR4', 'NOD1', 'NOD2', 'CLEC2B', 'CXCR2',
                      'LYZ', 'S100A10', 'S100A9', 'S100A8', 'NRG1', 'IL1B', 'TNF', 'CXCL10', 'CCL11',
-                     'GBP1', 'AHR', 'HIF1A', 'COX1', 'COX2', 'COX3', 'ND1', 'ND3', 'ATP6', 'INSYN2B', 'BTBD11'), 
+                     'GBP1', 'AHR', 'HIF1A', 'INSYN2B', 'BTBD11', 'COX1', 'COX2', 'COX3', 'ND1', 'ND3', 'ATP6', 'HBB'), 
         group.by = "celltypes", idents = "Salmonella",
         cols = c('grey', 'blue'), 
         col.min = -1, 
