@@ -16,7 +16,42 @@ library(ggrepel)
 library(clusterProfiler)
 library(scCustomize)
 
+##Whole Blood GO Figures
+# Read your GO results CSV file
+# The file should contain columns for "GO_Term", "pvalue", "geneID", "Count", etc.
 
+## plot selected GO terms for DPI2
+ggplot(data=WB_SignGOTerms_DPI2_CtrvSal_Fig, aes(x=Group, 
+                                y=fct_reorder(GOTerm, adjp), 
+                                fill=adjp, 
+                                size=FoldEnrichment)) +
+  scale_fill_gradient(low = "tomato3",
+                      high = "yellow2") + 
+  geom_point(shape=21) +
+  theme_bw() +
+  labs(y="GO Term", 
+       x="Group", 
+       fill="AdjPvalue", 
+       size="Fold Enrichment") + RotatedAxis()
+
+ggplot(data=WB_GOTerms_DPI2vDPI8Sal_Fig, aes(x=Group, 
+           y=fct_reorder(GoTerm, adjp), 
+          fill=adjp, 
+          size=FoldEnrichment)) +
+  scale_fill_gradient(low = "tomato3",
+                      high = "yellow2") + 
+  geom_point(shape=21) +
+  theme_bw() +
+  labs(y="GO Term", 
+       x="Group", 
+       fill="AdjPvalue", 
+       size="Fold Enrichment") + RotatedAxis()
+
+
+##Scripts for Figures with scRNAseq clusters
+##load data file with GO Terms
+
+#rename File for ease of script writing
 All_GO <- X07_GO_enrichment_DESeq_res0_3_cpm_shrink
 #plotting GOTerms from scClusters, which are still numbered 
 #change cluster to a Factor
