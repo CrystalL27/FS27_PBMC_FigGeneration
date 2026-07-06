@@ -1,0 +1,53 @@
+#Load libraries (everything from scRNAseq pipeline used in Sharu's analysis to create .h5 file)
+library(dplyr)
+library(stringr)
+library(readxl)
+library(writexl)
+library(ggplot2)
+library(scales)
+library(patchwork)
+library(ggraph)
+library(clustree)
+library(SeuratObject)
+library(SeuratDisk)
+library(Seurat)
+library(SingleCellExperiment)
+library(celda) #contains decontX
+library(scDblFinder)
+library(ggSave)
+library(scCustomize)
+library(clusterProfiler)
+library(enrichplot)
+
+
+##load dataset
+FS27PBMC <- LoadH5Seurat(('~/FS27_scRNAseq_Sharu_Dec2025/CleanOutputs/Seurat/09_Annotated_0.3res.h5Seurat'), image=FALSE)
+
+# Save palettes as variable to global environment and view if desired
+polychrome_pal <- DiscretePalette_scCustomize(num_colors = 36, palette = "polychrome")
+alphabet_pal <- DiscretePalette_scCustomize(num_colors = 26, palette = "alphabet")
+PalettePlot(pal = DiscretePalette_scCustomize(num_colors = 26, palette = "alphabet"))
+PalettePlot(pal = DiscretePalette_scCustomize(num_colors = 36, palette = "polychrome"))
+
+#Umap to view clusters by number
+DimPlot_scCustom(seurat_object = FS27PBMC, 
+                 group.by = "seurat_clusters", label = TRUE, 
+                 colors_use = DiscretePalette_scCustomize(num_colors = 19, palette = "alphabet")) +
+                  ggtitle("PBMC Clusters")
+
+#view dotplot of clusters with annotated gene list
+#confirm cluster #s and groupings using group by seurat clusters  
+DotPlot(FS27PBMC, group.by = "seurat_clusters", features = c('AIF1', 'SIRPA', 'CD14', 'CD163', 'CST3', 'FLT3',
+                                 'PAX5', 'CD79A', 'JCHAIN', 'IRF4',
+                                 'CD3E', 'CD3G', 'CD2', 'CD4', 'CD8A', 'CD8B', 'TRDC', 'CD5',
+                                 'NCR1', 'KLRK1', 'GZMB',
+                                 'PCLAF'),
+        cols = c("lightgrey", "blue"), 
+        col.min = -0.4, 
+        col.max = 2,
+        assay = "SCT") +
+  RotatedAxis() +
+  xlab('Gene') + ylab('Cluster') +
+  theme(axis.text.x = element_text(face = "italic")) 
+
+#
