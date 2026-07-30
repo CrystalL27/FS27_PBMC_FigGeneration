@@ -50,25 +50,6 @@ DotPlot(FS27PBMC, group.by = "seurat_clusters", features = c('AIF1', 'SIRPA', 'C
   xlab('Gene') + ylab('Cluster') +
   theme(axis.text.x = element_text(face = "italic")) 
 
-###how did we get to FS27PBMC2 file name?
-FS27PBMC_2 <- FS27PBMC
-#missed how clusters were reordered and labeled.
-
-
-#plot with clusters by cell type #reordered
-DotPlot(FS27PBMC_2, features = c('AIF1', 'SIRPA', 'CD14', 'CD163', 'CST3', 'FLT3',
-        'PAX5', 'CD79A', 'JCHAIN', 'IRF4',
-        'CD3E', 'CD3G', 'CD2', 'CD4', 'CD8A', 'CD8B', 'TRDC', 'CD5',
-        'NCR1', 'KLRK1', 'GZMB',
-        'PCLAF'),
-    cols = c("white", "blue"), 
-        col.min = -0.4, 
-        col.max = 2,
-        assay = "SCT") +
-  RotatedAxis() +
-  xlab('Gene') + ylab('Cluster') +
-  theme(axis.text.x = element_text(face = "italic"))
-
 ##create gene lists
 genes1 <- c('AIF1', 'SIRPA', 'CD14', 'CD163', 'CST3', 'FLT3', 'PAX5', 'CD79A', 'JCHAIN', 'IRF4', 
             'CD3E', 'CD3G', 'CD2', 'CD4', 'CD8A', 'CD8B', 'TRDC', 'CD5', 'NCR1', 'KLRK1', 'GZMB', 'PCLAF')
@@ -77,7 +58,7 @@ genes2 <- c('AIF1', 'SIRPA', 'CD14', 'CD163', 'LYZ', 'CST3', 'FLT3', 'FCER1A', '
             'CD3E', 'CD3G', 'CD247', 'CD2', 'CD4', 'CD8A', 'CD8B', 'TRDC', 'CD5', 'NCR1', 'KLRK1', 'GZMB', 'PCLAF')
 
 #Dotplot extended for main figure
-DotPlot(FS27PBMC_2, features = genes2,
+DotPlot(FS27PBMC, features = genes2,
         cols = c("white", "blue"), 
         col.min = -0.9, 
         col.max = 2,
@@ -86,14 +67,13 @@ DotPlot(FS27PBMC_2, features = genes2,
   xlab('Gene') + ylab('Cluster') +
   theme(axis.text.x = element_text(face = "italic"))
 
-#create Dim Plot with desired palette and labeling
-DimPlot(FS27PBMC_2, reduction = "umap")
         
-# Call within another function
+##Create DimPlot with all cells using different pallete##
 DimPlot_scCustom(seurat_object = FS27PBMC_2, label = FALSE, colors_use = DiscretePalette_scCustomize(num_colors = 19,
-                                                                                                     palette = "alphabet"))
-##feature plot of PBMC
-FeaturePlot_scCustom(seurat_object = FS27PBMC_2,
+            palette = "alphabet"))
+
+##feature plot of PBMC##
+FeaturePlot_scCustom(seurat_object = FS27PBMC,
                      features = c("CD14", "FLT3", "PAX5", "JCHAIN", "CD3E", "TRDC"),
                      label = FALSE, 
                      colors_use = viridis_magma_dark_high,
@@ -102,34 +82,17 @@ FeaturePlot_scCustom(seurat_object = FS27PBMC_2,
                      pt.size = 0.5,
                      num_columns = 6)
 
-
-#Can we show plots separate by treatment group
-#create new file to change idents to treatment 
-pbmc3 <- FS27PBMC_2
-Idents(pbmc3) <- "treatment"
-#combined UMAP with treatment as overlay
+#combined UMAP with treatment as overlay##
 DimPlot(pbmc3, reduction = "umap", group.by = "treatment", cols = c("darkblue", "191919FF")) +
   ggtitle("Treatment Groups") 
 
-#Separate UMAPS by treatment
-DimPlot_scCustom(seurat_object = FS27PBMC_2, 
+#Separate UMAPS by treatment##
+DimPlot_scCustom(seurat_object = FS27PBMC, 
                  group.by = "celltypes", split.by = "treatment", label = FALSE, 
                  colors_use = DiscretePalette_scCustomize(num_colors = 19, palette = "alphabet"))
 
 #create separate Dotplots for each treatment group - I did it by resetting the active idents in pbmc. Need to learn to create a column to use instead of changing each time.
 Idents(pbmc3) <- "treatment"
-DotPlot(pbmc3,
-        features = genes2,
-        group.by = "celltypes", idents = "Control",
-        cols = c('white', 'blue'), 
-  col.min = -0.4, 
-  col.max = 2,
-  assay = "SCT") +
-  RotatedAxis() +
-  xlab('Gene') + ylab('Cluster') +
-  theme(axis.text.x = element_text(face = "italic")) +
-  ggtitle("Control") & RotatedAxis()
-
 
 DotPlot(pbmc3,
         features = genes2,
