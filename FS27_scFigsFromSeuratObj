@@ -70,7 +70,7 @@ DotPlot(FS27PBMC, features = genes2,
   theme(axis.text.x = element_text(face = "italic"))
 
 ##Create DimPlot with all cells using different pallete##
-DimPlot_scCustom(seurat_object = FS27PBMC, label = FALSE, 
+DimPlot_scCustom(seurat_object = FS27PBMC, label = FALSE, group.by = "celltypes",
                 colors_use = DiscretePalette_scCustomize(num_colors = 19,
                 palette = "alphabet"))
 
